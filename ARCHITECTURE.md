@@ -56,7 +56,7 @@ moeEditer/
 ├── tools/
 │   ├── build-single.js   把 src/ 打成自包含单文件 HTML
 │   ├── make-probe.js     由 src/index.html 生成一个探针页（注入断言脚本）
-│   ├── run-probes.js     一把跑完 .workbuddy/ 下所有回归探针
+│   ├── run-probes.js     一把跑完 probes/ 下所有回归探针
 │   ├── probe-single.js   单文件版的真浏览器回归（跑 file://）
 │   ├── probe-device.js   真机尺寸跑探针（CDP 设备模拟，可截图）
 │   └── probe-touch.js    发真实触摸事件跑探针（CDP Input.dispatchTouchEvent）
@@ -100,7 +100,7 @@ moeEditer/
 | 位置 | 说明 |
 |---|---|
 | `src/index.html` | 加进 `<script>` 清单，注意顺序（依赖不能排在依赖者后面） |
-| `.workbuddy/probe-*.html` | 不用改 —— 探针页由 `tools/make-probe.js` 从 `index.html` 生成，自动跟随 |
+| `probes/probe-*.html` | 不用改 —— 探针页由 `tools/make-probe.js` 从 `index.html` 生成，自动跟随 |
 | `tools/build-single.js` | 不用改 —— 它从 `index.html` 读脚本清单，自动跟随 |
 
 探针页以前是**手工维护的副本**，是这套结构里最容易忘的地方（D-7 把自动滚动从
@@ -1350,9 +1350,9 @@ quote
 
 ---
 
-# 30. Modification Rules for AI
+# 30. Modification Rules
 
-AI coding agent 必须遵守以下规则：
+任何对项目的修改都必须遵守以下规则：
 
 ### Rule 1
 
@@ -1497,21 +1497,21 @@ export.js     shapePath() / STAR_POINTS_100       （导出，Canvas2D）
 仓库里已经有七个回归探针：
 
 ```text
-.workbuddy/probe-phase-c.html    长页手感（自动滚动 / 内容结束虚线 / 整理成列表）
-.workbuddy/probe-phase-d.html    导出补齐（sticker / divider / label 字距与大小写）
-.workbuddy/probe-phase-d5.html   Box 垂直对齐（含"预览位移 == 导出位移"的交叉验证）
-.workbuddy/probe-phase-d6.html   Box 每栏水平对齐（含"预览栏宽 == 导出栏宽"的回归）
-.workbuddy/probe-phase-d7.html   缩放侧的边缘自动滚动（含"手柄粘住指针"的交叉验证）
-.workbuddy/probe-phase-mobile.html  窄屏适配（抽屉归位 / 画布缩放 / 指针换算，分视口断言）
-.workbuddy/probe-crop-touch.html    裁剪拖动（真实触摸：拖图优先 + 整体平移兜底）
-.workbuddy/probe-touch-basic.html   基础触摸交互（真实触摸：拖动/缩放回滚、手柄命中区、状态收起）
+probes/probe-phase-c.html    长页手感（自动滚动 / 内容结束虚线 / 整理成列表）
+probes/probe-phase-d.html    导出补齐（sticker / divider / label 字距与大小写）
+probes/probe-phase-d5.html   Box 垂直对齐（含"预览位移 == 导出位移"的交叉验证）
+probes/probe-phase-d6.html   Box 每栏水平对齐（含"预览栏宽 == 导出栏宽"的回归）
+probes/probe-phase-d7.html   缩放侧的边缘自动滚动（含"手柄粘住指针"的交叉验证）
+probes/probe-phase-mobile.html  窄屏适配（抽屉归位 / 画布缩放 / 指针换算，分视口断言）
+probes/probe-crop-touch.html    裁剪拖动（真实触摸：拖图优先 + 整体平移兜底）
+probes/probe-touch-basic.html   基础触摸交互（真实触摸：拖动/缩放回滚、手柄命中区、状态收起）
 ```
 
-探针页都是**生成**出来的，不手抄 `index.html`：源脚本放 `.workbuddy/_*注入.js`，
+探针页都是**生成**出来的，不手抄 `index.html`：源脚本放 `tools/probe-src/`，
 用 `tools/make-probe.js` 注入到 `src/index.html` 的副本里。
 
 ```bash
-node tools/make-probe.js .workbuddy/_crop-touch.js .workbuddy/probe-crop-touch.html
+node tools/make-probe.js tools/probe-src/crop-touch.js probes/probe-crop-touch.html
 ```
 
 > **为什么要生成而不是手抄。** 探针必须跟真实的 `index.html` 完全一致（同样的样式表、
@@ -1537,7 +1537,7 @@ node tools/probe-single.js
 窄屏的事必须换尺寸跑，`--window-size` 顶不住：
 
 ```bash
-node tools/probe-device.js .workbuddy/probe-phase-mobile.html 390 844 截图.png
+node tools/probe-device.js probes/probe-phase-mobile.html 390 844 截图.png
 ```
 
 > **为什么不用 `--window-size`。** Edge 有窗口最小宽度（实测约 490px），传 390 拿到
@@ -1545,7 +1545,7 @@ node tools/probe-device.js .workbuddy/probe-phase-mobile.html 390 844 截图.png
 > 之内有效。`probe-device.js` 走 CDP 的 `Emulation.setDeviceMetricsOverride`，
 > 视口想多小就多小，还能顺带存截图。
 
-> 用完记得它起的是**独立 profile**（`.workbuddy/.cdp-profile`），否则会连到你正在
+> 用完记得它起的是**独立 profile**（`.cdp-profile`），否则会连到你正在
 > 用的那个浏览器实例上。
 
 > 提取探针结果别用 `grep PROBE_RESULT_START` —— 探针源码里有同一个字面量，
@@ -1568,7 +1568,7 @@ node tools/probe-device.js .workbuddy/probe-phase-mobile.html 390 844 截图.png
 纹丝不动。
 
 ```bash
-node tools/probe-touch.js .workbuddy/probe-crop-touch.html 390 844 截图.png
+node tools/probe-touch.js probes/probe-crop-touch.html 390 844 截图.png
 ```
 
 它走 CDP 的 `Input.dispatchTouchEvent`（真实输入管线，会做手势识别、会遵守

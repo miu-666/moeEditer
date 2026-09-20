@@ -1,9 +1,9 @@
 // 窄屏适配探针的断言部分。它不是直接打开的页面 —— 由 src/index.html 生成：
-// 把本文件注入 index.html 副本的 body 末尾，写成 .workbuddy/probe-phase-mobile.html，
+// 把本文件注入 index.html 副本的 body 末尾，写成 probes/probe-phase-mobile.html，
 // 同时把相对路径的 css/js 改成绝对 file:// 路径。生成命令见 ARCHITECTURE.md §34。
 //
 // 跑（真机尺寸，--window-size 给不到 390）：
-//   node tools/probe-device.js .workbuddy/probe-phase-mobile.html 390 844 截图.png
+//   node tools/probe-device.js probes/probe-phase-mobile.html 390 844 截图.png
 //
 // 断言分两种视口：窄屏（≤820）走抽屉分支，桌面走"不回归"分支。
 //

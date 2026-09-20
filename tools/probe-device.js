@@ -8,7 +8,7 @@
  *
  * 用法：
  *   node tools/probe-device.js                                 默认 390×844 + 探针
- *   node tools/probe-device.js .workbuddy/probe-phase-mobile.html 768 1024
+ *   node tools/probe-device.js probes/probe-phase-mobile.html 768 1024
  *   node tools/probe-device.js <探针> 390 844 截图.png          顺便存一张截图
  *
  * 退出码：探针有没有 FAIL（0 = 全过）。
@@ -20,10 +20,10 @@ const { spawn } = require("child_process");
 const ROOT = path.resolve(__dirname, "..");
 const EDGE = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const PORT = 9333;
-const PROFILE = path.join(ROOT, ".workbuddy", ".cdp-profile");
+const PROFILE = path.join(ROOT, ".cdp-profile");
 
 const argv = process.argv.slice(2);
-const probeRel = argv[0] || ".workbuddy/probe-phase-mobile.html";
+const probeRel = argv[0] || "probes/probe-phase-mobile.html";
 const width = Number(argv[1]) || 390;
 const height = Number(argv[2]) || 844;
 const shotRel = argv[3] || "";

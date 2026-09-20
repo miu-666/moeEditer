@@ -1,7 +1,7 @@
 # 页面模式（Fixed / Long）+ Box 分栏 + Title/Body 方案
 
 > 状态：**方案已确认；Phase A / B / C 均已完成（2026-09-19）；Phase D（V1 收尾）已排期，见第八节 Phase D**
-> 阅读对象：用户 / 后续 AI 会话
+> 阅读对象：用户 / 后续维护者
 > 前置文档：`prd.md`、`ARCHITECTURE.md`、`TODO.md`
 
 ## 已拍板的四个决定（用户确认）
@@ -768,7 +768,7 @@ scale 写到 `--canvas-scale` 上供 CSS 补偿手柄尺寸。
 
 新增 `tools/probe-device.js`：Edge 的窗口最小宽度约 490px，`--window-size=390`
 拿到的其实是 492，所以改用 CDP `Emulation.setDeviceMetricsOverride` 拿真机尺寸，
-顺便支持截图。探针 `.workbuddy/probe-phase-mobile.html` 在 320 / 390 / 768 /
+顺便支持截图。探针 `probes/probe-phase-mobile.html` 在 320 / 390 / 768 /
 1100 / 1440 五种宽度下断言，桌面侧不回归。
 
 **没做**：双指缩放、触屏长按菜单、多选框选。

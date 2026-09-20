@@ -10,7 +10,7 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist", "moe-bio-editor.html");
-const PROBE = path.join(ROOT, ".workbuddy", "probe-single.html");
+const PROBE = path.join(ROOT, "probes", "probe-single.html");
 
 if (!fs.existsSync(DIST)) {
   console.error("✗ 先跑 tools/build-single.js 生成 dist 产物");

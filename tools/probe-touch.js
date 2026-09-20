@@ -21,7 +21,7 @@
  *   #probe-out                 —— 结果节点，本工具读它
  *
  * 用法：
- *   node tools/probe-touch.js .workbuddy/probe-crop-touch.html 390 844 [截图.png]
+ *   node tools/probe-touch.js probes/probe-crop-touch.html 390 844 [截图.png]
  *
  * 退出码：探针有没有 FAIL（0 = 全过）。
  */
@@ -32,10 +32,10 @@ const { spawn } = require("child_process");
 const ROOT = path.resolve(__dirname, "..");
 const EDGE = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const PORT = 9334;
-const PROFILE = path.join(ROOT, ".workbuddy", ".cdp-profile-touch");
+const PROFILE = path.join(ROOT, ".cdp-profile-touch");
 
 const argv = process.argv.slice(2);
-const probeRel = argv[0] || ".workbuddy/probe-crop-touch.html";
+const probeRel = argv[0] || "probes/probe-crop-touch.html";
 const width = Number(argv[1]) || 390;
 const height = Number(argv[2]) || 844;
 const shotRel = argv[3] || "";

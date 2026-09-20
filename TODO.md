@@ -485,7 +485,7 @@ el.style.titleFontSize / titleFontWeight / titleColor / titleGap
 - [x] `export.js` 加 `divider` 分支：照 `.divider-line` 的 `width: 100%` + `height: lineWidth`
       + 垂直居中 + `border-radius: 1px` 画一条圆角横线
 - [x] 透明度沿用调用方统一设好的 `ctx.globalAlpha`，不重复应用
-- [x] 探针：`.workbuddy/probe-phase-d.html`（像素级；D-1 + D-2 共 29 条断言全过）
+- [x] 探针：`probes/probe-phase-d.html`（像素级；D-1 + D-2 共 29 条断言全过）
 
 **为什么以前会消失**：`renderElementToExportCanvas()` 是 if / else if 链，只有
 `text` / `textbox` / `image` / `label` 四个分支，落到最后的 `else` 就 `restore()` 直接返回。
@@ -635,7 +635,7 @@ storage.js  clearState()     没有「重置」入口，从未被调用
 被裁掉**，不是回到顶部。两者在"字最多"的时候反而差得最远。现在导出改成：照 flex 的
 数学算偏移（允许为负），并 `ctx.clip()` 到栏矩形，与预览的 `overflow: hidden` 对齐。
 
-**验证**：新增探针 `.workbuddy/probe-phase-d5.html`，**46 条断言全过、0 JS 错误**：
+**验证**：新增探针 `probes/probe-phase-d5.html`，**46 条断言全过、0 JS 错误**：
 
 | 断言 | 实测 |
 |---|---|
@@ -815,7 +815,7 @@ D-7 之后计划里只剩 D-8，而 D-8 六项全部需要拍板，于是按"没
 - 新增 `tools/probe-device.js`：Edge 的窗口最小宽度约 490px，`--window-size=390`
   实际拿到 492，`--force-device-scale-factor` 也只影响几个像素 —— 所以改走 CDP 的
   `Emulation.setDeviceMetricsOverride` 拿真机尺寸，顺带支持存截图。
-- `.workbuddy/probe-phase-mobile.html` 在 320 / 390 / 768 / 1100 / 1440 五种宽度下
+- `probes/probe-phase-mobile.html` 在 320 / 390 / 768 / 1100 / 1440 五种宽度下
   断言（窄屏走抽屉分支、桌面走"不回归"分支）。
 - 证伪实验：把 `toCanvasDelta` 改成恒等 → 4 条断言失败，偏差正好是 `1/scale`。
 - 全量探针 191 → 210 条，`run-probes.js` 加进 mobile 探针后桌面侧无回归；
@@ -853,14 +853,14 @@ const leftoverX = (startOffsetX + wantX) - d.offsetX;   // 图片吃不下、被
 d.x = clamp(startX + leftoverX, 0, canvasW - d.w);       // 交给框平移
 ```
 
-**验证**：`.workbuddy/probe-crop-touch.html`（由 `tools/make-probe.js` 从 `src/index.html`
+**验证**：`probes/probe-crop-touch.html`（由 `tools/make-probe.js` 从 `src/index.html`
 生成，配 `tools/probe-touch.js` 跑真触摸）覆盖两种情形 —— 框比图大（整体平移）、
 框比图小（先滑图片、滑到头再平移框），10/10 通过。证伪实验：把「滑到头就整体平移」
 拿掉后，"拖动后裁剪区域有位移"立刻失败且位移正好 0.0，即修复前的症状。
 
 **顺手**：`tools/run-probes.js` 支持探针自带的 `#probe-out` 输出、两个 CDP 工具跑前
 `Storage.clearDataForOrigin` 清场（裁剪那次的截图里混进过上一次跑剩下的元素，看着
-像产品 bug）；旧 5 个探针的内联脚本抽成 `.workbuddy/_phase-*.js`，统一由
+像产品 bug）；旧 5 个探针的内联脚本抽成 `tools/probe-src/phase-*.js`，统一由
 `make-probe.js` 生成，脚本清单不再是手工副本。
 
 ---
@@ -868,7 +868,7 @@ d.x = clamp(startX + leftoverX, 0, canvasW - d.w);       // 交给框平移
 ## Phase G - 其余触摸交互的真实触摸回归 —— 已完成 2026-09-20
 
 裁剪修完后，用 `probe-touch.js`（CDP `Input.dispatchTouchEvent` 真实输入管线）把
-**其余触摸交互**也过了一遍，新增 `.workbuddy/probe-touch-basic.html`（由
+**其余触摸交互**也过了一遍，新增 `probes/probe-touch-basic.html`（由
 `tools/make-probe.js` 从 `src/index.html` 生成）。抓到三个真问题，全修：
 
 **G-1 元素上竖滑被 `pointercancel` 打断后，元素被拖走不回来**
@@ -901,7 +901,7 @@ d.x = clamp(startX + leftoverX, 0, canvasW - d.w);       // 交给框平移
 **实现位置**：`src/js/drag.js` `resize.js`（cancelled 回滚）`state.js`
 （`drag.elStartX/elStartY`、`origX/origY`）`components.css`（手柄命中区 / crop 工具栏窄屏紧凑化）
 `tools/probe-touch.js` `tools/make-probe.js` `tools/run-probes.js`
-`.workbuddy/_touch-basic.js` `_crop-touch.js`
+`tools/probe-src/touch-basic.js` `_crop-touch.js`
 
 ---
 

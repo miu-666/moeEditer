@@ -2,7 +2,7 @@
  * 跑一遍所有回归探针，汇总 PASS / FAIL。
  *
  * 两种探针：
- *   1. .workbuddy/probe-phase-*.html  —— 普通探针，--dump-dom 跑一遍读结果节点
+ *   1. probes/probe-phase-*.html  —— 普通探针，--dump-dom 跑一遍读结果节点
  *   2. 触摸探针（下面 touchProbes）    —— 必须发真实触摸事件，交给 probe-touch.js 跑
  *      合成 PointerEvent 绕过了浏览器的手势仲裁，拖动类问题在它下面永远不复现。
  *
@@ -21,7 +21,7 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");
-const DIR = path.join(ROOT, ".workbuddy");
+const DIR = path.join(ROOT, "probes");
 const EDGE = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 
 // 需要真实触摸的探针。跑法不一样（走 CDP dispatchTouchEvent），所以单独列出来。
@@ -104,8 +104,8 @@ for (const tp of touchProbes) {
   if (tp.src && fs.existsSync(path.join(DIR, tp.src))) {
     spawnSync(process.execPath, [
       path.join(ROOT, "tools", "make-probe.js"),
-      ".workbuddy/" + tp.src,
-      ".workbuddy/" + tp.file,
+      "tools/probe-src/" + tp.src,
+      "probes/" + tp.file,
       tp.file.replace(/\.html$/, "")
     ], { encoding: "utf8" });
   }
@@ -115,7 +115,7 @@ for (const tp of touchProbes) {
 
     const res = spawnSync(
       process.execPath,
-      [path.join(ROOT, "tools", "probe-touch.js"), ".workbuddy/" + tp.file, String(w), String(h)],
+      [path.join(ROOT, "tools", "probe-touch.js"), "probes/" + tp.file, String(w), String(h)],
       { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }
     );
 

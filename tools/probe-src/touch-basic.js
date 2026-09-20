@@ -1,7 +1,7 @@
 // 基础触摸交互回归：选中 / 拖动 / 缩放手柄 / 长页滚动。
 //
-//   node tools/make-probe.js .workbuddy/_touch-basic.js .workbuddy/probe-touch-basic.html probe-touch-basic
-//   node tools/probe-touch.js .workbuddy/probe-touch-basic.html 390 844
+//   node tools/make-probe.js tools/probe-src/touch-basic.js probes/probe-touch-basic.html probe-touch-basic
+//   node tools/probe-touch.js probes/probe-touch-basic.html 390 844
 //
 // 为什么必须真触摸：这些交互的正确性一半取决于**浏览器把不把手势让给页面**
 // （touch-action、滚动容器抢手势、pointercancel）。合成 PointerEvent 绕过了这一层，

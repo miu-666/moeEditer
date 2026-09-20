@@ -1,13 +1,13 @@
-# WorkBuddy 会话数据：浏览器 profile 有几百 MB，工作日志属于本地数据，不进仓库
-.workbuddy/*
-# 但探针断言源码要进仓库 —— 它们是 tools/make-probe.js 的输入，文档引用了
-!.workbuddy/_*.js
-
-# 本地临时备份
+# WorkBuddy 会话数据（浏览器 profile、工作日志等本地数据，不进仓库）
+.workbuddy/
 .workbuddy-backup-tmp/
 
-# 探针页是生成物，由 make-probe.js 从 src/index.html 重新生成，不手抄也不提交
-.workbuddy/probe-*.html
+# 探针页是生成物，由 tools/make-probe.js 从 src/index.html 生成，不提交
+probes/
+
+# CDP 浏览器 profile（探针工具的运行缓存）
+.cdp-profile/
+.cdp-profile-touch/
 
 # 系统 / 编辑器杂项
 Thumbs.db

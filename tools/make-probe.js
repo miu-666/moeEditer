@@ -7,13 +7,13 @@
  * 其实是探针过期了。
  *
  * 做三件事：
- *   1. 把相对路径的 css/js 换成绝对 file://（探针页在 .workbuddy/ 下，相对路径会找不到）
+ *   1. 把相对路径的 css/js 换成绝对 file://（探针页在 probes/ 下，相对路径会找不到）
  *   2. 把注入脚本内联到 </body> 前
  *   3. 断言注入脚本里没有结束标签字面量 —— 有的话会提前闭合 script 标签，
  *      探针代码被截断，症状是"没抓到结果节点"，极难排查
  *
  * 用法：
- *   node tools/make-probe.js .workbuddy/_crop-touch.js .workbuddy/probe-crop-touch.html
+ *   node tools/make-probe.js tools/probe-src/crop-touch.js probes/probe-crop-touch.html
  *   node tools/make-probe.js <注入脚本> <输出 html> [<title>]
  */
 const fs = require("fs");

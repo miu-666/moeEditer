@@ -1,6 +1,6 @@
 // 裁剪模式拖动的触摸回归。由 src/index.html 生成探针页，用真实触摸跑：
 //
-//   node tools/probe-touch.js .workbuddy/probe-crop-touch.html 390 844
+//   node tools/probe-touch.js probes/probe-crop-touch.html 390 844
 //
 // 这个探针存在的理由：合成 PointerEvent 永远不会复现"手势被浏览器抢走"，
 // 所以拖动类问题必须在真触摸下测。同时它盯住一个真实存在过的死锁 ——
