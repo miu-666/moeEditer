@@ -1,0 +1,702 @@
+/* Buttons */
+.btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.btn-primary {
+  background: #6b5ce7;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #5a4dd0;
+}
+
+.btn-secondary {
+  background: #f0f0f5;
+  color: #555;
+}
+
+.btn-secondary:hover {
+  background: #e4e4ea;
+}
+
+.btn-upload {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Component List */
+.component-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.component-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f8f8fb;
+  color: #444;
+  font-size: 13px;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.component-btn:hover {
+  background: #f0f0f5;
+}
+
+.component-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b5ce7;
+  border: 1px solid #eee;
+}
+
+/* Assets Grid */
+.assets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.assets-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
+  padding: 12px 0;
+}
+
+.asset-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: #f8f8fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid #eee;
+  transition: border-color 0.15s;
+}
+
+.asset-item:hover {
+  border-color: #6b5ce7;
+}
+
+.asset-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.asset-delete {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.asset-item:hover .asset-delete {
+  display: flex;
+}
+
+.asset-delete:hover {
+  background: #d44;
+}
+
+/* Canvas Elements */
+.canvas-element {
+  position: absolute;
+  cursor: move;
+  user-select: none;
+}
+
+.canvas-element.selected {
+  outline: 2px solid #6b5ce7;
+  outline-offset: 2px;
+}
+
+.canvas-element .element-content {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Text Element */
+.element-text .element-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.element-text .text-inner {
+  width: 100%;
+  outline: none;
+  cursor: text;
+  word-break: break-word;
+}
+
+.element-text.selected .text-inner {
+  cursor: move;
+}
+
+.element-text.editing .text-inner {
+  cursor: text;
+}
+
+/* Image Element */
+.element-image .element-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+/* Sticker Element */
+.element-sticker .element-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  user-select: none;
+}
+
+/* Divider Element */
+.element-divider .element-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.element-divider .divider-line {
+  width: 100%;
+  height: 2px;
+  background: #333;
+  border-radius: 1px;
+}
+
+/* Text Box Element — one or two columns, each an optional title above a body.
+   The layout class picks the direction, `--split` drives both the first
+   column's size and the divider position, and both are written inline by
+   applyBoxBody(). */
+.element-textbox .element-content {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #333;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+}
+
+.box-body {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: var(--box-gap, 12px);
+  /* The divider is positioned against this box, not against .element-content:
+     percentages there would resolve against the padding box and slide by the
+     box's own padding. */
+  position: relative;
+}
+
+.box-body.layout-columns { flex-direction: row; }
+.box-body.layout-rows { flex-direction: column; }
+
+.box-column {
+  display: flex;
+  flex-direction: column;
+  /* A flex item will not shrink below its content without these, so a column
+     would push its neighbour off the edge instead of clipping. */
+  min-width: 0;
+  min-height: 0;
+  /* A text block taller than its column is cut at the column's edges rather
+     than spilling over the neighbour. The exporter clips to the same rect. */
+  overflow: hidden;
+}
+
+/* Where a column's text block sits vertically. The class is always written by
+   applyBoxBody(), and the default value comes from readBoxLayout() — a
+   single-column box centres, a split box starts at the top. So leaving the
+   setting alone reproduces the original look exactly. */
+.box-body.valign-top > .box-column { justify-content: flex-start; }
+.box-body.valign-middle > .box-column { justify-content: center; }
+.box-body.valign-bottom > .box-column { justify-content: flex-end; }
+
+/* Only a split box divides the content area: --split sizes the first column and
+   the second takes what is left. A single-column box hands its one column the
+   whole area — which is what boxColumnRects() has always assumed when exporting.
+   Without this the preview drew the text into the left half while the PNG
+   centred it on the full frame. */
+.box-body.layout-single > .box-column[data-col="0"] { flex: 1 1 0; }
+.box-body.layout-columns > .box-column[data-col="0"],
+.box-body.layout-rows > .box-column[data-col="0"] { flex: 0 0 var(--split, 50%); }
+.box-body.layout-columns > .box-column[data-col="1"],
+.box-body.layout-rows > .box-column[data-col="1"] { flex: 1 1 0; }
+
+.box-title,
+.box-text {
+  outline: none;
+  cursor: move;
+  word-break: break-word;
+  /* Keeps a typed \n a real line break, the way wrapText() does on export. */
+  white-space: pre-wrap;
+}
+
+.box-title { margin-bottom: var(--title-gap, 6px); }
+
+.element-textbox.editing .box-title,
+.element-textbox.editing .box-text { cursor: text; }
+
+/* The divider only exists on a split Box, and only shows while that Box is
+   selected — otherwise it would sit on top of the text. */
+.column-splitter {
+  position: absolute;
+  display: none;
+  z-index: 12;
+}
+
+.box-body.layout-columns > .column-splitter {
+  width: 11px;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--split, 50%) + var(--box-gap, 12px) / 2 - 5.5px);
+  cursor: col-resize;
+}
+
+.box-body.layout-rows > .column-splitter {
+  height: 11px;
+  left: 0;
+  right: 0;
+  top: calc(var(--split, 50%) + var(--box-gap, 12px) / 2 - 5.5px);
+  cursor: row-resize;
+}
+
+.canvas-element.selected .column-splitter { display: block; }
+
+/* Centred with a transform rather than hand-tuned offsets, so the line lands
+   exactly halfway between the two columns whatever the gap is. */
+.column-splitter::after {
+  content: "";
+  position: absolute;
+  background: #6b5ce7;
+  opacity: 0.6;
+  border-radius: 2px;
+}
+
+.box-body.layout-columns > .column-splitter::after {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+}
+
+.box-body.layout-rows > .column-splitter::after {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  height: 1.5px;
+}
+
+/* Image element: the frame is inline-styled (background / borders / padding /
+   radius / shape clip), so there is nothing to declare here beyond the default
+   size the photo fills when no crop geometry is set. */
+
+/* Box style variants */
+/* The shadow presets live entirely in the inline box-shadow written by
+   applySurface(). Keeping a CSS box-shadow here as well would stack a second
+   shadow on top of the one the sliders describe. */
+.box-style-dashed {
+  border-style: dashed !important;
+}
+
+/* Label Element */
+.element-label .element-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Resize Handles */
+.resize-handle {
+  position: absolute;
+  /* Page units divided by the viewport scale, so the handle keeps the same
+     on-screen size on a phone where the whole canvas is scaled down. The scale
+     is 1 on desktop, which makes every calc() below the plain value. */
+  width: calc(10px / var(--canvas-scale, 1));
+  height: calc(10px / var(--canvas-scale, 1));
+  background: #fff;
+  border: calc(2px / var(--canvas-scale, 1)) solid #6b5ce7;
+  border-radius: 50%;
+  display: none;
+  z-index: 10;
+}
+
+/* Fingers are a lot wider than a 10px dot. The pseudo-element widens the hit
+   area without changing what the handle looks like — mouse-sized by default,
+   finger-sized on a narrow screen (see the media query below). */
+.resize-handle::after,
+.crop-handle::after {
+  content: "";
+  position: absolute;
+  inset: calc(-6px / var(--canvas-scale, 1));
+}
+
+.canvas-element.selected .resize-handle {
+  display: block;
+}
+
+/* Touch gestures: an unselected element lets the canvas scroll under the
+   finger, a selected one swallows the gesture so it can be dragged. Tapping
+   selects, the next press moves — the same bargain every mobile editor makes,
+   and the only way both "scroll a long page" and "drag a block" can coexist. */
+.canvas-element.selected,
+.resize-handle,
+.crop-window-hit,
+.crop-window,
+.crop-handle {
+  touch-action: none;
+}
+
+.resize-handle.nw { top: calc(-6px / var(--canvas-scale, 1)); left: calc(-6px / var(--canvas-scale, 1)); cursor: nw-resize; }
+.resize-handle.ne { top: calc(-6px / var(--canvas-scale, 1)); right: calc(-6px / var(--canvas-scale, 1)); cursor: ne-resize; }
+.resize-handle.sw { bottom: calc(-6px / var(--canvas-scale, 1)); left: calc(-6px / var(--canvas-scale, 1)); cursor: sw-resize; }
+.resize-handle.se { bottom: calc(-6px / var(--canvas-scale, 1)); right: calc(-6px / var(--canvas-scale, 1)); cursor: se-resize; }
+
+/* Content End Marker — long pages only. Sits under the crop overlay (9000) and
+   above every element, and never takes pointer events so dragging is unaffected. */
+.content-end-marker {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-top: 1px dashed rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: 8000;
+}
+
+.content-end-label {
+  position: absolute;
+  right: 8px;
+  top: -17px;
+  font-size: 11px;
+  line-height: 15px;
+  padding: 0 5px;
+  border-radius: 3px;
+  color: #8a8a8a;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Alignment Guides */
+.alignment-guides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.guide {
+  position: absolute;
+  background: #6b5ce7;
+}
+
+.guide-vertical {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed #6b5ce7;
+  background: none;
+}
+
+.guide-horizontal {
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px dashed #6b5ce7;
+  background: none;
+}
+
+/* Property grids for shapes and styles */
+.shape-grid,
+.style-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.shape-btn,
+.style-btn {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: #f8f8fb;
+  border: 1px solid #e0e0e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s;
+}
+
+.shape-btn:hover,
+.style-btn:hover {
+  background: #f0f0f5;
+}
+
+.shape-btn.active,
+.style-btn.active {
+  border-color: #6b5ce7;
+  background: #edeafd;
+}
+
+.shape-preview {
+  width: 18px;
+  height: 18px;
+  background: #6b5ce7;
+}
+
+.shape-none {
+  border-radius: 0;
+}
+
+.shape-circle {
+  border-radius: 50%;
+}
+
+.shape-rounded {
+  border-radius: 4px;
+}
+
+.shape-heart {
+  clip-path: path('M9 16 C2 11 0 6 3 3 C5 1 8 2 9 5 C10 2 13 1 15 3 C18 6 16 11 9 16 Z');
+  background: #6b5ce7;
+}
+
+.shape-star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.shape-diamond {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.shape-arch {
+  clip-path: path('M0 20 L0 6 Q10 -4 20 6 L20 20 Z');
+}
+
+.style-preview {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #6b5ce7;
+  border-radius: 3px;
+  background: #fff;
+}
+
+.style-dashed {
+  border-style: dashed;
+}
+
+/* Outer border + shadow of a shaped image. A box-shadow spread can only grow a
+   rounded rectangle, so these two are drawn on an SVG layer that follows the
+   same outline the photo is clipped to. It has to overflow, otherwise the outer
+   half of the frame stroke would be cut off by the SVG box. */
+.element-shape-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.crop-info {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #888;
+}
+
+/* Crop mode */
+.canvas-element.cropping {
+  visibility: hidden;
+}
+
+.crop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9000;
+}
+
+.crop-ghost {
+  position: absolute;
+  opacity: 0.28;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.crop-window {
+  position: absolute;
+  overflow: hidden;
+  background: transparent;
+}
+
+.crop-clip-img {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.crop-window-hit {
+  position: absolute;
+  background: transparent;
+  cursor: move;
+}
+
+.crop-outline {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.crop-handle {
+  position: absolute;
+  /* Same viewport-scale compensation as the resize handles. */
+  width: calc(14px / var(--canvas-scale, 1));
+  height: calc(14px / var(--canvas-scale, 1));
+  margin: calc(-7px / var(--canvas-scale, 1)) 0 0 calc(-7px / var(--canvas-scale, 1));
+  border-radius: 50%;
+  background: #fff;
+  border: calc(2px / var(--canvas-scale, 1)) solid #6b5ce7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.crop-handle-nw { cursor: nwse-resize; }
+.crop-handle-ne { cursor: nesw-resize; }
+.crop-handle-sw { cursor: nesw-resize; }
+.crop-handle-se { cursor: nwse-resize; }
+
+.crop-toolbar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  padding: 10px 14px;
+  max-width: calc(100vw - 24px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14);
+  z-index: 10000;
+}
+
+.crop-toolbar-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.crop-shape-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #f0f0f5;
+  color: #555;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.crop-shape-btn:hover {
+  background: #e4e4ea;
+}
+
+.crop-shape-btn.active {
+  background: #6b5ce7;
+  color: #fff;
+}
+
+.crop-hint {
+  margin-left: 8px;
+  font-size: 12px;
+  color: #9a9aa8;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .crop-hint {
+    display: none;
+  }
+
+  /* Crop is the one mode with a fixed toolbar, so on a phone it has to fit
+     between the two screen edges and above the home indicator. */
+  .crop-toolbar {
+    gap: 10px;
+    padding: 8px 10px;
+  }
+
+  .crop-shape-btn {
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+
+  /* A fingertip covers about 40px, and the visible handles have to stay small
+     (they sit on a corner and must not hide the artwork). So the visible dot
+     keeps its size and only the invisible hit area grows — measured with
+     `elementFromPoint` it goes from 10px to ~42px, the same as the crop
+     handles. Only here: on a desktop a mouse lands on a 10px dot fine, and
+     oversized areas would overlap each other on small elements. */
+  .resize-handle::after,
+  .crop-handle::after {
+    inset: calc(-18px / var(--canvas-scale, 1));
+  }
+}
